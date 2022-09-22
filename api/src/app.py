@@ -12,6 +12,7 @@ Server for running the recommender algorithms. See
 outputs.
 """
 
+import os
 from flask import Flask, Response, abort, json, render_template, request
 from flask_cors import CORS, cross_origin
 
@@ -31,25 +32,21 @@ movie_db = None
 
 with open('config.json') as f:
     settings = json.load(f)
-ACTIVITY_BASE = settings['activity_base_path']
-MOVIE_DB = settings['postgres_url']
-SURVEY_DB = settings['mysql_url']
+MOVIE_DB = 'sqlite:///' + os.path.abspath(settings['movidb'])
+SURVEY_DB = 'sqlite:///' + os.path.abspath(settings['userdb'])
 SURVEY_ID = settings['survey_id']
-REDIRECT_URL = settings['study_redirect_url']
 SQLALCHEMY_BINDS = {
-    'postgres': MOVIE_DB
+    'movies': MOVIE_DB
 }
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = SURVEY_DB
 app.config['SQLALCHEMY_BINDS'] = SQLALCHEMY_BINDS
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'encoding': 'utf-8'}
 
-survey_db = SurveyDB(initialize_db(app), redirect_url=REDIRECT_URL,
-                    activity_base_path=ACTIVITY_BASE)
+survey_db = SurveyDB(initialize_db(app))
 movie_db = MovieDB(db)
 
 rssa = RSSACompute()
-
 
 
 @app.route('/')

@@ -7,12 +7,9 @@ if not sys.warnoptions:
 '''          
 import numpy as np
 import pandas as pd
-#from lenskit.algorithms import als
-import customizedALS
 import setpath
 import time
 import pickle
-from load_npz import load_trainset_npz
 import lenskit.batch as lkb
 from itertools import product
 
@@ -20,7 +17,7 @@ from itertools import product
 if __name__ == '__main__':
 
     print('Test batch prediction')   
-    f_import = open('../model/implictMF.pkl', 'rb')
+    f_import = open('model/implictMF.pkl', 'rb')
     algo_trained = pickle.load(f_import)
     f_import.close()
     
@@ -55,7 +52,7 @@ if __name__ == '__main__':
         
         for j in range(numResampledModels):
             print('user: %d,  sample: %d' % (i+1, j+1), end = '\r')
-            f_import = open('../model/resampled_implictMF' + str(j+1) + '.pkl', 'rb')
+            f_import = open('model/resampled_implictMF' + str(j+1) + '.pkl', 'rb')
             algo_resampled = pickle.load(f_import)
             f_import.close()
             res = lkb.predict(algo_resampled, UIpairs_df)
