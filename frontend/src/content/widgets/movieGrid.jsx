@@ -6,7 +6,7 @@ import MovieGridItem from './movieGridItem';
 
 
 class MovieGrid extends Component {
-	itemsPerPage = 15;
+	itemsPerPage = 2;
 
 	constructor(props) {
 		super(props);
@@ -154,11 +154,11 @@ class MovieGrid extends Component {
 		if (itemsInCache > 0) {
 			return (
 				<div className="grid-layout" style={{ width: "fit-content", margin: "0 auto", display: "flex" }}>
-					<div style={{ paddingTop: "234px", marginRight: "18px" }}>
+					{/* <div style={{ paddingTop: "234px", marginRight: "18px" }}>
 						<Button id="gallery-left-btn" disabled={startIdx === 0} variant="primary" style={{ width: "54px", height: "270px" }} onClick={this.renderPrev}>
 							&lt;
 						</Button>
-					</div>
+					</div> */}
 					{((startIdx + this.itemsPerPage) <= itemsInCache) ?
 						<div className="grid-container">
 							{this.state.movies.slice(startIdx, startIdx + this.itemsPerPage).map(currentMovie => (
@@ -170,11 +170,11 @@ class MovieGrid extends Component {
 							<Spinner animation="border" role="status" style={{ margin: "18% 50%", width: "54px", height: "54px" }} />
 						</div>
 					}
-					<div style={{ paddingTop: "234px", marginLeft: "18px" }}>
+					{/* <div style={{ paddingTop: "234px", marginLeft: "18px" }}>
 						<Button id="gallery-right-btn" variant="primary" style={{ width: "54px", height: "270px" }} onClick={this.renderNext}>
 							&gt;
 						</Button>
-					</div>
+					</div> */}
 				</div>
 			);
 		} else {
