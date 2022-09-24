@@ -20,7 +20,7 @@ class MovieGridItem extends Component {
 				className={"grid-item " + containerClass} style={{
 					backgroundImage: "url(" + currentMovie.poster + "), url('" + defaultMovieIco + "')",
 				}}>
-				<div className="overlay">
+				<div className="overlay" onClick={changeRating}>
 					<div className={starDivClass}>
 						<p>{currentMovie.description}</p>
 						{/* <StarRatings

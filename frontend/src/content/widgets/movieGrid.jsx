@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { Component } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import MovieGridItem from './movieGridItem';
+import PreferenceSlider from "./PreferenceSlider";
 
 
 class MovieGrid extends Component {
@@ -16,7 +17,9 @@ class MovieGrid extends Component {
 			currentPage: 1,
 			ratingHistory: [],
 			hoverHistory: [],
-			actionHistory: []
+			actionHistory: [],
+			number_ratings_left: 10,
+			slider_rating: 50,
 		}
 		this.renderNext = this.renderNextSet.bind(this);
 		this.renderPrev = this.renderPrevSet.bind(this);
@@ -129,6 +132,7 @@ class MovieGrid extends Component {
 			ratingHistory: ratingHistory
 		});
 		this.props.ratingHandler(vstdLst, isNew, ratingHistory);
+		console.log("changed rating for " + movieid + " to " + newRating )
 	}
 
 	trackHover = (evt, movieid, action) => {
@@ -148,35 +152,71 @@ class MovieGrid extends Component {
 		this.props.hoverHandler(history);
 	}
 
+	change_ratings_and_render_next = (preferred_item) => {
+		// console.log(preferred_item)
+		// console.log(this.state.currentPage)
+		let index_first_movie_on_page = (this.state.currentPage - 1)*this.itemsPerPage
+		let current_selections = [this.state.movies[index_first_movie_on_page], this.state.movies[index_first_movie_on_page + 1]]
+		// console.log(current_selections)
+
+		let liked = preferred_item
+		let disliked = current_selections.filter((movie)=>{
+			return (movie != preferred_item)
+		})
+
+		this.changeRating(5, liked.movie_id)
+		this.changeRating(1, disliked[0].movie_id)
+		this.state.number_ratings_left -= 1
+		this.renderNextSet()
+		// console.log(current_selections)
+		// console.log(liked)
+		
+		//console.log(this.state.movies)
+	}
+
+	handleSliderChange = (new_value) =>
+	{
+		this.setState({slider_rating: new_value})
+		console.log(new_value)
+	}
 	render() {
 		let startIdx = (this.state.currentPage - 1) * this.itemsPerPage;
 		let itemsInCache = this.state.movies.length;
 		if (itemsInCache > 0) {
-			return (
-				<div className="grid-layout" style={{ width: "fit-content", margin: "0 auto", display: "flex" }}>
-					{/* <div style={{ paddingTop: "234px", marginRight: "18px" }}>
-						<Button id="gallery-left-btn" disabled={startIdx === 0} variant="primary" style={{ width: "54px", height: "270px" }} onClick={this.renderPrev}>
-							&lt;
-						</Button>
-					</div> */}
-					{((startIdx + this.itemsPerPage) <= itemsInCache) ?
-						<div className="grid-container">
-							{this.state.movies.slice(startIdx, startIdx + this.itemsPerPage).map(currentMovie => (
-								<MovieGridItem key={"TN_" + currentMovie.id} movieItem={currentMovie}
-									ratingCallback={this.changeRating} hoverTracker={this.trackHover} />
-							))}
+			if(this.state.number_ratings_left > 0){
+				return (
+					<div>
+						<div className="grid-layout" style={{ width: "fit-content", margin: "0 auto", display: "flex" }}>
+							{/* <div style={{ paddingTop: "234px", marginRight: "18px" }}>
+								<Button id="gallery-left-btn" disabled={startIdx === 0} variant="primary" style={{ width: "54px", height: "270px" }} onClick={this.renderPrev}>
+									&lt;
+								</Button>
+							</div> */}
+							{((startIdx + this.itemsPerPage) <= itemsInCache) ?
+								<div className="grid-container">
+									{this.state.movies.slice(startIdx, startIdx + this.itemsPerPage).map(currentMovie => (
+										<MovieGridItem key={"TN_" + currentMovie.id} movieItem={currentMovie}
+											ratingCallback={()=>this.change_ratings_and_render_next(currentMovie)} hoverTracker={this.trackHover} />
+									))}
+								</div>
+								: <div style={{ minWidth: "918px", minHeight: "656px" }}>
+									<Spinner animation="border" role="status" style={{ margin: "18% 50%", width: "54px", height: "54px" }} />
+								</div>
+							}
+							{/* <div style={{ paddingTop: "234px", marginLeft: "18px" }}>
+								<Button id="gallery-right-btn" variant="primary" style={{ width: "54px", height: "270px" }} onClick={this.renderNext}>
+									&gt;
+								</Button>
+							</div> */}
 						</div>
-						: <div style={{ minWidth: "918px", minHeight: "656px" }}>
-							<Spinner animation="border" role="status" style={{ margin: "18% 50%", width: "54px", height: "54px" }} />
-						</div>
-					}
-					{/* <div style={{ paddingTop: "234px", marginLeft: "18px" }}>
-						<Button id="gallery-right-btn" variant="primary" style={{ width: "54px", height: "270px" }} onClick={this.renderNext}>
-							&gt;
-						</Button>
-					</div> */}
-				</div>
-			);
+						<PreferenceSlider value={this.state.slider_rating} changeHandler ={this.handleSliderChange} ></PreferenceSlider>
+					</div>
+				);
+			}
+			else {
+				return(<p>you have rated all of the items</p>)
+			}
+			
 		} else {
 			return (
 				<div style={{ minWidth: "300px", minHeight: "656px" }}>
