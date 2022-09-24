@@ -21,8 +21,9 @@ class MovieGridItem extends Component {
 					backgroundImage: "url(" + currentMovie.poster + "), url('" + defaultMovieIco + "')",
 				}}>
 				<div className="overlay">
-					{/* <div className={starDivClass}>
-						<StarRatings
+					<div className={starDivClass}>
+						<p>{currentMovie.description}</p>
+						{/* <StarRatings
 							rating={currentMovie.rating}
 							starRatedColor="rgb(252,229,65)"
 							starHoverColor="rgb(252,229,65)"
@@ -30,8 +31,8 @@ class MovieGridItem extends Component {
 							starSpacing="1px"
 							changeRating={changeRating}
 							numberOfStars={5}
-							name={currentMovie.movie_id} />
-					</div> */}
+							name={currentMovie.movie_id} /> */}
+					</div> 
 					{/* <p style={{color: "white"}}>Yes | No</p> */}
 				</div>
 				<div className="grid-item-label" style={{ position: "absolute" }}>
