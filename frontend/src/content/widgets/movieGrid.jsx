@@ -132,7 +132,6 @@ class MovieGrid extends Component {
 			ratingHistory: ratingHistory
 		});
 		this.props.ratingHandler(vstdLst, isNew, ratingHistory);
-		console.log("changed rating for " + movieid + " to " + newRating )
 	}
 
 	trackHover = (evt, movieid, action) => {
@@ -152,32 +151,55 @@ class MovieGrid extends Component {
 		this.props.hoverHandler(history);
 	}
 
-	change_ratings_and_render_next = (preferred_item) => {
+	change_ratings_and_render_next = (slider_position) => {
 		// console.log(preferred_item)
 		// console.log(this.state.currentPage)
+
 		let index_first_movie_on_page = (this.state.currentPage - 1)*this.itemsPerPage
 		let current_selections = [this.state.movies[index_first_movie_on_page], this.state.movies[index_first_movie_on_page + 1]]
 		// console.log(current_selections)
 
-		let liked = preferred_item
-		let disliked = current_selections.filter((movie)=>{
-			return (movie != preferred_item)
-		})
+		let rating_item_1 = 3
+		let rating_item_2 = 3
 
-		this.changeRating(5, liked.movie_id)
-		this.changeRating(1, disliked[0].movie_id)
+		if(slider_position <= 20){
+			rating_item_1 = 5
+			rating_item_2 = 1
+
+		}
+		else if(slider_position <= 40){
+			rating_item_1 = 4
+			rating_item_2 = 2
+			
+		}
+		else if(slider_position <= 60){
+			rating_item_1 = 3
+			rating_item_2 = 3
+			
+		}
+		else if(slider_position < 80){
+			rating_item_1 = 2
+			rating_item_2 = 4
+		}
+		else {
+			rating_item_1 = 1
+			rating_item_2 = 5
+		}
+
+		//console.log(current_selections[0])
+		this.changeRating(rating_item_1, current_selections[0].id)
+		this.changeRating(rating_item_2, current_selections[1].id)
 		this.state.number_ratings_left -= 1
+
+		// reset slider position
+		this.setState({slider_rating: 50})
+
 		this.renderNextSet()
-		// console.log(current_selections)
-		// console.log(liked)
-		
-		//console.log(this.state.movies)
 	}
 
 	handleSliderChange = (new_value) =>
 	{
 		this.setState({slider_rating: new_value})
-		console.log(new_value)
 	}
 	render() {
 		let startIdx = (this.state.currentPage - 1) * this.itemsPerPage;
@@ -195,8 +217,7 @@ class MovieGrid extends Component {
 							{((startIdx + this.itemsPerPage) <= itemsInCache) ?
 								<div className="grid-container">
 									{this.state.movies.slice(startIdx, startIdx + this.itemsPerPage).map(currentMovie => (
-										<MovieGridItem key={"TN_" + currentMovie.id} movieItem={currentMovie}
-											ratingCallback={()=>this.change_ratings_and_render_next(currentMovie)} hoverTracker={this.trackHover} />
+										<MovieGridItem key={"TN_" + currentMovie.id} movieItem={currentMovie} hoverTracker={this.trackHover} />
 									))}
 								</div>
 								: <div style={{ minWidth: "918px", minHeight: "656px" }}>
@@ -209,13 +230,11 @@ class MovieGrid extends Component {
 								</Button>
 							</div> */}
 						</div>
-						<PreferenceSlider value={this.state.slider_rating} changeHandler ={this.handleSliderChange} ></PreferenceSlider>
+						<PreferenceSlider value={this.state.slider_rating} changeHandler ={this.handleSliderChange} confirmRating={this.change_ratings_and_render_next} ></PreferenceSlider>
 					</div>
 				);
 			}
-			else {
-				return(<p>you have rated all of the items</p>)
-			}
+			
 			
 		} else {
 			return (
