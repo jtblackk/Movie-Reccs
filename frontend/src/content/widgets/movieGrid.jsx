@@ -151,7 +151,7 @@ class MovieGrid extends Component {
 		this.props.hoverHandler(history);
 	}
 
-	change_ratings_and_render_next = (slider_position) => {
+	changeRatingsAndRenderNext = (slider_position) => {
 		// console.log(preferred_item)
 		// console.log(this.state.currentPage)
 
@@ -230,7 +230,7 @@ class MovieGrid extends Component {
 								</Button>
 							</div> */}
 						</div>
-						<PreferenceSlider value={this.state.slider_rating} changeHandler ={this.handleSliderChange} confirmRating={this.change_ratings_and_render_next} ></PreferenceSlider>
+						<PreferenceSlider value={this.state.slider_rating} changeHandler ={this.handleSliderChange} confirmRating={this.changeRatingsAndRenderNext} ></PreferenceSlider>
 					</div>
 				);
 			}
