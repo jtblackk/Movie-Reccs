@@ -209,9 +209,9 @@ div .card {
 	background-position-y: top;
 	background-repeat: no-repeat;
 	background-color: rgba(0, 0, 0, 1.0);
-	width: 300px;
+	width: 400px;
 	text-align: center;
-	height: 400px;
+	height: 600px;
 }
 
 .movieSurvey.grid-item {
@@ -224,7 +224,7 @@ div .card {
 	background-color: black;
 	color: white;
 	opacity: 0.8;
-	cursor: grab;
+	/* cursor: grab; */
 }
 
 .grid-item:hover .star-div {
