@@ -27,16 +27,16 @@ class RatingPage extends Component {
             steps: [
                 {
                     element: ".jumbotron",
-                    intro: "Find a movie that you have watched and rate it on a 5-point scale."
+                    intro: "Move the slider to indicate your movie preferences."
                 },
                 {
                     element: "#gallery-right-btn",
-                    intro: "Click this button to scroll through the gallery of movies.",
+                    intro: "Click the confirm button to confirm your rating and move on to the next rating.",
                     position: "left"
                 },
                 {
                     element: ".rankHolder",
-                    intro: "You must rate at least " + this.moviesRatingCount + " movies to proceed."
+                    intro: "You must rate " + this.moviesRatingCount + " pairs to proceed."
                 },
                 {
                     element: ".next-button",
@@ -168,13 +168,14 @@ class RatingPage extends Component {
                 />
                 <div className="jumbotron">
                     <h1 className="header">Indicate your preferences</h1>
-                    <p>Use the blue button on the right to scroll through
-                        the gallery of movies and rate at least 10 movies
-                        that you have already watched. Once you have rated 10
-                        movies, the system will be able to give you
-                        recommendations.
-                        Keep in mind, you can click on the blue button on the
-                        right to get more movies to rate!</p>
+                    <p>Use the slider below to indicate how much you prefer 
+                        one movie over the other. For example, if you strongly 
+                        prefer one, move the slider to one of the extremes.
+                        If you moderately prefer one, move the slider to the 
+                        one you prefer, but not to the extremes. If you have 
+                        no preference, movie the slider to the center.
+                    </p>
+                    
                 </div>
                 <Container>
                     <MovieGrid ratingHandler={this.rateMoviesHandler} userid={userid} pageid={pageid}
@@ -182,9 +183,9 @@ class RatingPage extends Component {
                 </Container>
                 <div className="jumbotron jumbotron-footer" style={{ display: "flex" }}>
                     <div className="rankHolder">
-                        <span> Ranked Movies: </span>
-                        <span><i>{this.state.count}</i></span>
-                        <span><i>of {this.moviesRatingCount}</i></span>
+                        <span> Ratings left: </span>
+                        <span><i>{this.moviesRatingCount - this.state.count}</i></span>
+                        {/* <span><i>of {this.moviesRatingCount}</i></span> */}
                     </div>
                     <Button variant={buttonVariant} size="lg" style={{ height: "fit-content", marginTop: "1em" }}
                         className="next-button footer-btn" disabled={disabled && !this.state.loading}
