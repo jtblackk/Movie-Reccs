@@ -13,15 +13,9 @@ class PreferenceSlider extends Component {
 						<Col className="d-flex" md={{ span: 1, offset: 1 }} style={{ height: "36px", padding: "0" }}>
 
 						</Col> 
-						{/* <Col></Col> */}
 						<Col md={{ span: 8 }} align="center" style={{margin: "auto 0 0 0px"}}>
-							{/* <Button variant="ersToggle">Low</Button> */}
-							{/* <Form.Label></Form.Label> */}
 							<Form.Range value={this.props.value}onChange={(e)=>this.props.changeHandler(e.target.value)} />
 						</Col>
-						{/* <Col className="d-flex" md={{ span: 2, offset: 1 }} style={{ height: "36px", padding: "0" }}>
-
-						</Col>  */}
 					</Row>
 
 
