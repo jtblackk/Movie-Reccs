@@ -7,20 +7,7 @@ import { HandThumbsUp, HandThumbsDown } from 'react-bootstrap-icons';
 class PreferenceSidebar extends Component {
 
 	getPreferenceSummmary(userscore, commscore) {
-		/*
-			'Both you and your community like this movie.'
-			'Both you and your community dislike this movie.'
-			'Both you and your community are indifferent to this movie.'
-
-			'You like this movie but your community dislikes this movie.'
-			'You like this movie but your community is indifferent to this movie.'
-
-			'You dislike this movie but your community likes this movie.'
-			'You dislike this movie but your community is indifferent to this movie.'
-
-			'You are indifferent to this movie but your community likes this movie.'
-			'You are indifferent to this movie but your community dislikes this movie.'
-		*/
+		
 
 		let userPolarity = this.getPreferencePolarity(userscore);
 		let commPolarity = this.getPreferencePolarity(commscore);
